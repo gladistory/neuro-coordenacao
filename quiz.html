@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qual é o seu grau de liderança como coordenador(a) multidisciplinar? — Quiz NeuroCoordenação</title>
+<meta name="description" content="Responda um diagnóstico rápido e descubra se você está no nível Operacional, em Transição ou Executivo(a) como coordenador(a) multidisciplinar.">
+
+<!-- TODO antes de publicar:
+  1) Trocar KIWIFY_CHECKOUT_URL (no bloco de JavaScript no final do arquivo) pelo link real de checkout da Kiwify.
+  2) Trocar APPS_SCRIPT_URL pela URL do seu Web App do Google Apps Script (veja o guia em
+     GUIA-Salvar-Respostas-e-Enviar-Email.md). Sem isso, o resultado só aparece no console do
+     navegador — nada é salvo na planilha nem enviado por e-mail.
+  3) O total de pontos foi recalculado para 50 (25 perguntas pontuadas), e as faixas de resultado
+     (0-17 / 18-34 / 35-50) foram reescaladas proporcionalmente a partir do PDF original, que
+     citava 44 pontos para 22 perguntas mas continha 25 perguntas pontuadas. Ajuste os pontos de
+     corte em tierBoundaries() se quiser outros valores.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --cream:#EFE7DA;
+    --dark:#2B1D14;
+    --dark-deep:#1F150E;
+    --dark-warm:#34241A;
+    --brown:#5C4A3A;
+    --gold:#B08D4F;
+    --gold-light:#C9A96A;
+    --gold-dark:#8C6A34;
+    --card:#FAF7F1;
+    --line:#E3D9C8;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Lora', serif;
+    background:
+      radial-gradient(1100px 700px at 15% -10%, var(--dark-warm) 0%, transparent 60%),
+      linear-gradient(165deg, var(--dark-deep) 0%, var(--dark) 55%, var(--dark-warm) 100%);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px 16px;
+  }
+  h1,h2,.q-btn,.q-eyebrow,.q-step,.q-offer-label,.q-offer-title,.q-option,.q-input,.q-back{
+    font-family:'Poppins', sans-serif;
+  }
+
+  .quiz-shell{ width:100%; max-width:560px; }
+
+  .quiz-brand{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    color:var(--gold-light); font-family:'Poppins',sans-serif; font-size:11.5px;
+    letter-spacing:2px; text-transform:uppercase; margin-bottom:16px; opacity:.9;
+  }
+  .quiz-brand svg{ width:16px; height:16px; }
+
+  .quiz-progress-track{
+    height:5px; background:rgba(255,255,255,.14); border-radius:99px; margin-bottom:16px;
+    overflow:hidden; transition:opacity .25s ease;
+  }
+  .quiz-progress-bar{
+    height:100%; width:0%; background:linear-gradient(90deg, var(--gold-light), var(--gold));
+    border-radius:99px; transition:width .35s ease;
+  }
+
+  .quiz-card{
+    background:var(--card);
+    border-radius:14px;
+    padding:34px 28px 28px 28px;
+    box-shadow:0 24px 60px rgba(0,0,0,.35);
+    min-height:280px;
+  }
+
+  .q-eyebrow{
+    font-size:11.5px; font-weight:600; letter-spacing:1.6px; text-transform:uppercase;
+    color:var(--gold-dark); margin-bottom:10px;
+  }
+  .q-step{
+    font-size:11.5px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase;
+    color:var(--brown); opacity:.7; margin-bottom:10px;
+  }
+  .q-title{
+    font-size:25px; font-weight:600; color:var(--dark); line-height:1.28; margin:0 0 12px 0;
+  }
+  .q-qtext{
+    font-size:20px; font-weight:600; color:var(--dark); line-height:1.32; margin:0 0 14px 0;
+  }
+  .q-sub{
+    font-family:'Lora',serif; font-size:15.5px; line-height:1.6; color:var(--brown);
+    margin:0 0 22px 0;
+  }
+
+  .q-btn{
+    display:inline-block; width:100%; text-align:center; appearance:none; border:none;
+    cursor:pointer; font-size:15.5px; font-weight:600; letter-spacing:.2px;
+    color:var(--dark); background:linear-gradient(180deg, var(--gold-light), var(--gold));
+    padding:15px 20px; border-radius:9px; box-shadow:0 10px 22px rgba(176,141,79,.35);
+    text-decoration:none; transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .q-btn:hover{ transform:translateY(-1px); box-shadow:0 14px 28px rgba(176,141,79,.45); }
+  .q-btn:active{ transform:translateY(0); }
+
+  .q-foot{
+    text-align:center; font-family:'Poppins',sans-serif; font-size:12px; color:var(--brown);
+    opacity:.75; margin-top:14px;
+  }
+
+  .q-options{ display:flex; flex-direction:column; gap:10px; margin-bottom:6px; }
+  .q-option{
+    display:flex; align-items:center; gap:12px; text-align:left;
+    background:#fff; border:1.5px solid var(--line); border-radius:10px;
+    padding:14px 16px; font-size:14.5px; color:var(--dark); cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, transform .1s ease;
+  }
+  .q-option:hover{ border-color:var(--gold-light); background:#fffdf8; }
+  .q-option.is-selected{
+    border-color:var(--gold); background:#FAF1DE; transform:scale(0.99);
+  }
+  .q-option-mark{
+    flex:0 0 auto; width:16px; height:16px; border-radius:50%; border:1.5px solid var(--line);
+    background:#fff;
+  }
+  .q-option.is-selected .q-option-mark{
+    border-color:var(--gold); background:radial-gradient(circle, var(--gold) 0 45%, transparent 50%);
+  }
+
+  .q-back{
+    display:block; margin:16px auto 0 auto; background:none; border:none; cursor:pointer;
+    color:var(--brown); font-size:13px; text-decoration:underline; opacity:.75;
+  }
+  .q-back:hover{ opacity:1; }
+
+  .q-form{ display:flex; flex-direction:column; gap:10px; margin-bottom:4px; }
+  .q-input{
+    font-family:'Poppins',sans-serif; font-size:14.5px; padding:13px 14px;
+    border:1.5px solid var(--line); border-radius:9px; background:#fff; color:var(--dark);
+    outline:none; transition:border-color .15s ease;
+  }
+  .q-input:focus{ border-color:var(--gold); }
+
+  .q-offer{
+    margin-top:20px; padding:20px 18px; border:1px dashed var(--gold-light);
+    background:#FAF1DE; border-radius:11px; text-align:center;
+  }
+  .q-offer-label{
+    font-size:11px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase;
+    color:var(--gold-dark); margin-bottom:6px;
+  }
+  .q-offer-title{
+    font-size:15px; font-weight:600; color:var(--dark); margin-bottom:10px;
+  }
+  .q-price{
+    font-family:'Poppins',sans-serif; font-size:14px; color:var(--brown); margin-bottom:14px;
+  }
+  .q-price-old{ text-decoration:line-through; opacity:.6; margin-right:4px; }
+  .q-price strong{ color:var(--dark); font-size:19px; }
+  .q-btn-cta{ margin-top:2px; }
+
+  @media (max-width:420px){
+    .quiz-card{ padding:26px 20px 22px 20px; }
+    .q-title{ font-size:22px; }
+    .q-qtext{ font-size:18px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="quiz-shell">
+    <div class="quiz-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/><path d="M15.5 8.5 13 13l-4.5 2.5L11 11l4.5-2.5Z"/>
+        <path d="M12 2.3v1.6M12 20.1v1.6M2.3 12h1.6M20.1 12h1.6"/>
+      </svg>
+      NeuroCoordenação
+    </div>
+
+    <div class="quiz-progress-track" id="quizProgress" style="opacity:0">
+      <div class="quiz-progress-bar" id="quizProgressBar"></div>
+    </div>
+
+    <div class="quiz-card" id="quizCard"><!-- renderizado via JS --></div>
+  </div>
+
+<script>
+// ===================== CONFIG =====================
+const KIWIFY_CHECKOUT_URL = "https://pay.kiwify.com.br/SEU-LINK-AQUI"; // TODO: trocar pelo link real da Kiwify
+
+// ===================== FLUXO (perfil + 25 perguntas pontuadas em 5 partes) =====================
+const FLOW = [
+  { type: "profile", key: "area", text: "Qual sua área de atuação?",
+    options: ["Enfermagem", "Nutrição", "Fonoaudiologia", "Psicologia", "Farmacêutico",
+      "Engenharia de Segurança do Trabalho (SESMT)", "Gerência de Governança", "Outro setor hospitalar"] },
+  { type: "profile", key: "anos", text: "Há quantos anos você atua em cargo de gestão/coordenação?",
+    options: ["Menos de 1 ano", "1 a 3 anos", "4 a 7 anos", "Mais de 7 anos"] },
+
+  // Parte 1 — Visão Estratégica e Planejamento
+  { type: "scored", part: 1, section: "Visão Estratégica e Planejamento",
+    text: "Você tem um plano de desenvolvimento de carreira para os próximos anos?",
+    options: [{ label: "Sim", points: 2 }, { label: "Não", points: 0 }] },
+  { type: "scored", part: 1, section: "Visão Estratégica e Planejamento",
+    text: "Ao iniciar a semana, você:",
+    options: [
+      { label: "Já tenho minhas entregas e prioridades planejadas", points: 2 },
+      { label: "Ajo conforme as demandas vão surgindo", points: 0 },
+    ] },
+  { type: "scored", part: 1, section: "Visão Estratégica e Planejamento",
+    text: "Você já comunicou formalmente à sua liderança que deseja crescer na instituição?",
+    options: [
+      { label: "Sim, pois sei que isso abre portas de apoio e desenvolvimento", points: 2 },
+      { label: "Não, prefiro não expor essa intenção", points: 0 },
+    ] },
+  { type: "scored", part: 1, section: "Visão Estratégica e Planejamento",
+    text: "Ao participar de uma reunião com a Diretoria, você foca sua fala:",
+    options: [
+      { label: "No que sua equipe executa no dia a dia", points: 0 },
+      { label: "No valor e no impacto que sua equipe gera para o hospital", points: 2 },
+    ] },
+
+  // Parte 2 — Postura diante de Desafios
+  { type: "scored", part: 2, section: "Postura diante de Desafios",
+    text: "Você se sente travado(a) por falta de oportunidades de crescimento na instituição?",
+    options: [{ label: "Sim", points: 0 }, { label: "Não", points: 2 }] },
+  { type: "scored", part: 2, section: "Postura diante de Desafios",
+    text: "Quando um colega de outra área tenta te prejudicar ou disputa espaço com você, sua reação é:",
+    options: [{ label: "Emocional", points: 0 }, { label: "Estratégica", points: 2 }] },
+  { type: "scored", part: 2, section: "Postura diante de Desafios",
+    text: "Diante de uma frustração no trabalho, você:",
+    options: [
+      { label: "Recomponho rápido e ajusto a forma de agir", points: 2 },
+      { label: "Preciso de tempo e perco a motivação", points: 0 },
+    ] },
+  { type: "scored", part: 2, section: "Postura diante de Desafios",
+    text: "Quando recebe um feedback com o qual não concorda, você:",
+    options: [
+      { label: "Discuto e defendo minha posição, pois acredito que estou certo(a)", points: 0 },
+      { label: "Busco entender o ponto de vista e ajusto meu comportamento", points: 2 },
+    ] },
+  { type: "scored", part: 2, section: "Postura diante de Desafios",
+    text: "No último mês, você conseguiria listar ações concretas feitas para ser visto(a) pela Diretoria/Gestão do hospital como referência técnica e de liderança?",
+    options: [{ label: "Sim", points: 2 }, { label: "Não", points: 0 }] },
+
+  // Parte 3 — Relação com Pares e Outras Áreas
+  { type: "scored", part: 3, section: "Relação com Pares e Outras Áreas",
+    text: "No seu dia a dia com outros coordenadores/áreas, você:",
+    options: [
+      { label: "Age como a maioria, sem se destacar", points: 0 },
+      { label: "É referência, puxando o time para o resultado", points: 2 },
+    ] },
+  { type: "scored", part: 3, section: "Relação com Pares e Outras Áreas",
+    text: "Você acredita que a rotina assistencial/operacional reduz suas chances de crescer para cargos de gestão maiores?",
+    options: [{ label: "Sim", points: 0 }, { label: "Não", points: 2 }] },
+  { type: "scored", part: 3, section: "Relação com Pares e Outras Áreas",
+    text: "Quando surge um problema fora da sua área (ex.: um problema de Farmácia sendo você da Enfermagem), você:",
+    options: [
+      { label: "Se prontifica a ajudar e articular solução", points: 2 },
+      { label: "Entende que não é sua responsabilidade e não interfere", points: 0 },
+    ] },
+  { type: "scored", part: 3, section: "Relação com Pares e Outras Áreas",
+    text: "Em reuniões multidisciplinares, você se posiciona e sua visão é considerada?",
+    options: [{ label: "Sim", points: 2 }, { label: "Não", points: 0 }] },
+  { type: "scored", part: 3, section: "Relação com Pares e Outras Áreas",
+    text: "Ao apresentar um projeto ou proposta, você:",
+    options: [
+      { label: "Segue sempre a mesma ordem/roteiro", points: 0 },
+      { label: "Adapta a comunicação conforme o interlocutor (médico, diretor, equipe)", points: 2 },
+    ] },
+
+  // Parte 4 — Autoconfiança e Consciência de Carreira
+  { type: "scored", part: 4, section: "Autoconfiança e Consciência de Carreira",
+    text: "Diante de uma liderança que não te desenvolve, você:",
+    options: [
+      { label: "Busca formas de aprender mesmo assim e se conectar", points: 2 },
+      { label: "Tenta trocar de setor/hospital ou espera a sorte mudar", points: 0 },
+    ] },
+  { type: "scored", part: 4, section: "Autoconfiança e Consciência de Carreira",
+    text: "Você tem clareza de quanto do seu tempo semanal é dedicado a gerir estrategicamente sua carreira (e não só a operação)?",
+    options: [{ label: "Sim", points: 2 }, { label: "Não", points: 0 }] },
+  { type: "scored", part: 4, section: "Autoconfiança e Consciência de Carreira",
+    text: "Você recebe elogios principalmente por:",
+    options: [
+      { label: "Tarefa/procedimento bem executado", points: 0 },
+      { label: "Valor e resultado gerado para o hospital", points: 2 },
+    ] },
+  { type: "scored", part: 4, section: "Autoconfiança e Consciência de Carreira",
+    text: "No geral, o quanto a ansiedade sobre sua carreira te consome?",
+    options: [{ label: "Muito", points: 0 }, { label: "Pouco", points: 2 }] },
+  { type: "scored", part: 4, section: "Autoconfiança e Consciência de Carreira",
+    text: "Diante de um problema, sua primeira reação é:",
+    options: [
+      { label: "Ficar preocupado(a) buscando culpados", points: 0 },
+      { label: "Focar imediatamente na solução", points: 2 },
+    ] },
+
+  // Parte 5 — Liderança de Equipe Multidisciplinar
+  { type: "scored", part: 5, section: "Liderança de Equipe Multidisciplinar",
+    text: "Você é um(a) coordenador(a) que entrega resultado através das pessoas, sem precisar “colocar a mão na operação” o tempo todo?",
+    options: [{ label: "Sim", points: 2 }, { label: "Não", points: 0 }] },
+  { type: "scored", part: 5, section: "Liderança de Equipe Multidisciplinar",
+    text: "Você possui rotina de feedback individual com os profissionais da sua equipe (mesmo os de categorias diferentes da sua)?",
+    options: [{ label: "Sim", points: 2 }, { label: "Não", points: 0 }] },
+  { type: "scored", part: 5, section: "Liderança de Equipe Multidisciplinar",
+    text: "Como líder, você tem dificuldade em dar feedbacks duros ou ter conversas difíceis com liderados?",
+    options: [{ label: "Sim", points: 0 }, { label: "Não", points: 2 }] },
+  { type: "scored", part: 5, section: "Liderança de Equipe Multidisciplinar",
+    text: "Seu time entrega o que você pede porque:",
+    options: [
+      { label: "“Quem tem chefe, tem juízo”", points: 0 },
+      { label: "Admiram minha liderança e fazem por mim, não pelo cargo", points: 2 },
+    ] },
+  { type: "scored", part: 5, section: "Liderança de Equipe Multidisciplinar",
+    text: "Você forma sucessores na sua equipe, ou seja, alguém preparado para te substituir?",
+    options: [{ label: "Sim", points: 2 }, { label: "Não", points: 0 }] },
+  { type: "scored", part: 5, section: "Liderança de Equipe Multidisciplinar",
+    text: "Em caso de precisar desligar alguém do time, você:",
+    options: [
+      { label: "Sabe a hora certa e age com tranquilidade", points: 2 },
+      { label: "Posterga por não gostar desse momento, mesmo sabendo que deveria agir", points: 0 },
+    ] },
+];
+
+const SCORED_QUESTIONS = FLOW.filter((q) => q.type === "scored");
+const MAX_SCORE = SCORED_QUESTIONS.reduce(
+  (sum, q) => sum + Math.max(...q.options.map((o) => o.points)),
+  0
+);
+
+// Faixas reescaladas proporcionalmente às originais (0–15 / 16–30 / 31–44 de 44),
+// aplicadas ao MAX_SCORE real (25 perguntas x 2 = 50). Ajuste aqui se quiser outros cortes.
+function tierBoundaries(max) {
+  return { t1: Math.round((15 / 44) * max), t2: Math.round((30 / 44) * max) };
+}
+
+const TIERS = {
+  operacional: {
+    title: "Coordenador(a) Operacional",
+    text: "Você hoje está muito focado(a) na execução técnica da sua área e ainda não construiu uma postura de gestão estratégica multidisciplinar. Isso não é falha sua — na saúde, é muito comum sermos formados para “fazer bem feito”, e não para liderar. O risco é continuar sendo extremamente competente tecnicamente, mas invisível como liderança para a Diretoria e RH, o que trava promoções e reconhecimento. O primeiro passo é sair do “fazer” para o “gerir através das pessoas” e começar a construir visibilidade estratégica dentro do hospital.",
+  },
+  transicao: {
+    title: "Coordenador(a) em Transição",
+    text: "Você já demonstra atitudes de liderança e começa a pensar estrategicamente, mas ainda alterna entre comportamentos operacionais e executivos. Provavelmente falta uma rotina clara de desenvolvimento de equipe multidisciplinar, comunicação com a alta liderança e gestão intencional da própria carreira. Você está no momento certo para estruturar esse próximo salto antes que a rotina hospitalar tome conta e essa transição fique mais difícil.",
+  },
+  executivo: {
+    title: "Coordenador(a) Executivo(a)",
+    text: "Você já apresenta comportamentos consistentes de liderança multidisciplinar: pensa estrategicamente, desenvolve pessoas, se posiciona com a Diretoria e sabe conduzir decisões difíceis. Seu próximo desafio não é aprender a liderar — é escalar sua influência, ganhar mais visibilidade institucional e se posicionar para cargos de gestão maiores (gerência, superintendência) dentro ou fora do hospital atual.",
+  },
+};
+
+function resultTierKey(score, max) {
+  const b = tierBoundaries(max);
+  if (score <= b.t1) return "operacional";
+  if (score <= b.t2) return "transicao";
+  return "executivo";
+}
+
+// URL do seu Web App do Google Apps Script (Extensões > Apps Script > Implantar > App da Web).
+// Enquanto não configurar, o resultado só aparece no console do navegador (nada é salvo/enviado).
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbza_nx-KKDlhBDXg7naccT5qVbDjlff40O1EqWAIlpak7nduRGw-IW5mROD63S8sk4I/exec";
+
+function saveLead(payload) {
+  console.log("[quiz] lead capturado:", payload);
+  if (APPS_SCRIPT_URL.indexOf("SEU-ID-AQUI") !== -1) {
+    console.warn("[quiz] APPS_SCRIPT_URL não configurada — resultado não foi salvo nem enviado por e-mail.");
+    return;
+  }
+  // Content-Type text/plain evita o preflight CORS que o Apps Script não responde bem.
+  fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload),
+  }).catch(function (err) {
+    console.error("[quiz] erro ao salvar lead:", err);
+  });
+}
+
+// ===================== ESTADO =====================
+let currentIndex = 0;
+const profileAnswers = {};
+const scoredAnswers = []; // pontos, na mesma ordem de SCORED_QUESTIONS
+
+// ===================== RENDER =====================
+const cardEl = document.getElementById("quizCard");
+const progressEl = document.getElementById("quizProgress");
+const progressBarEl = document.getElementById("quizProgressBar");
+const TOTAL_STEPS = FLOW.length;
+
+function setProgress(stepIndex, visible) {
+  progressEl.style.opacity = visible ? "1" : "0";
+  const pct = Math.min(100, (stepIndex / TOTAL_STEPS) * 100);
+  progressBarEl.style.width = pct + "%";
+}
+
+function renderIntro() {
+  setProgress(0, false);
+  currentIndex = 0;
+  cardEl.innerHTML = `
+    <div class="q-eyebrow">Diagnóstico rápido · leva ~3 minutos</div>
+    <h1 class="q-title">Qual é o seu grau de liderança como coordenador(a) multidisciplinar?</h1>
+    <p class="q-sub">Responda ${TOTAL_STEPS} perguntas rápidas sobre carreira, postura e liderança
+      de equipe — e descubra em qual nível você está hoje: Operacional, em Transição ou Executivo(a).</p>
+    <button class="q-btn" id="startBtn" type="button">Começar diagnóstico</button>
+    <div class="q-foot">Leva cerca de 3 minutos · sem cadastro pra começar</div>
+  `;
+  document.getElementById("startBtn").addEventListener("click", () => {
+    currentIndex = 0;
+    scoredAnswers.length = 0;
+    renderStep(0);
+  });
+}
+
+function renderStep(index) {
+  const step = FLOW[index];
+  setProgress(index, true);
+  if (step.type === "profile") {
+    renderProfileStep(step, index);
+  } else {
+    renderScoredStep(step, index);
+  }
+}
+
+function renderProfileStep(step, index) {
+  const optionsHtml = step.options
+    .map((label, i) => `<button class="q-option" type="button" data-label="${label}" data-i="${i}">
+        <span class="q-option-mark"></span><span>${label}</span>
+      </button>`)
+    .join("");
+  cardEl.innerHTML = `
+    <div class="q-step">Perfil</div>
+    <h2 class="q-qtext">${step.text}</h2>
+    <div class="q-options">${optionsHtml}</div>
+    ${index > 0 ? '<button class="q-back" id="backBtn" type="button">&larr; Voltar</button>' : ""}
+  `;
+  cardEl.querySelectorAll(".q-option").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      markSelected(btn);
+      profileAnswers[step.key] = btn.getAttribute("data-label");
+      goNext(index);
+    });
+  });
+  wireBack(index);
+}
+
+function renderScoredStep(step, index) {
+  const optionsHtml = step.options
+    .map((opt, i) => `<button class="q-option" type="button" data-points="${opt.points}" data-i="${i}">
+        <span class="q-option-mark"></span><span>${opt.label}</span>
+      </button>`)
+    .join("");
+  cardEl.innerHTML = `
+    <div class="q-step">Parte ${step.part} de 5 · ${step.section}</div>
+    <h2 class="q-qtext">${step.text}</h2>
+    <div class="q-options">${optionsHtml}</div>
+    ${index > 0 ? '<button class="q-back" id="backBtn" type="button">&larr; Voltar</button>' : ""}
+  `;
+  const scoredIdx = SCORED_QUESTIONS.indexOf(step);
+  cardEl.querySelectorAll(".q-option").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      markSelected(btn);
+      scoredAnswers[scoredIdx] = Number(btn.getAttribute("data-points"));
+      goNext(index);
+    });
+  });
+  wireBack(index);
+}
+
+function markSelected(btn) {
+  btn.parentElement.querySelectorAll(".q-option").forEach((b) => b.classList.remove("is-selected"));
+  btn.classList.add("is-selected");
+}
+
+function wireBack(index) {
+  const backBtn = document.getElementById("backBtn");
+  if (backBtn) backBtn.addEventListener("click", () => renderStep(index - 1));
+}
+
+function goNext(index) {
+  setTimeout(() => {
+    if (index + 1 < FLOW.length) {
+      renderStep(index + 1);
+    } else {
+      renderLeadCapture();
+    }
+  }, 300);
+}
+
+function renderLeadCapture() {
+  setProgress(TOTAL_STEPS, true);
+  cardEl.innerHTML = `
+    <div class="q-eyebrow">Quase lá</div>
+    <h2 class="q-qtext">Pra onde a gente envia seu diagnóstico?</h2>
+    <p class="q-sub">Digite seu nome e e-mail pra ver o seu grau de liderança.</p>
+    <form id="leadForm" class="q-form" novalidate>
+      <input class="q-input" type="text" id="leadName" placeholder="Seu primeiro nome" required />
+      <input class="q-input" type="email" id="leadEmail" placeholder="Seu melhor e-mail" required />
+      <button class="q-btn" type="submit">Ver meu resultado</button>
+    </form>
+    <button class="q-back" id="skipBtn" type="button">Prefiro só ver o resultado</button>
+  `;
+  document.getElementById("leadForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("leadName").value.trim();
+    const email = document.getElementById("leadEmail").value.trim();
+    finishQuiz(name, email);
+  });
+  document.getElementById("skipBtn").addEventListener("click", () => finishQuiz("", ""));
+}
+
+function finishQuiz(name, email) {
+  const score = scoredAnswers.reduce((a, b) => a + (b || 0), 0);
+  const key = resultTierKey(score, MAX_SCORE);
+  const t = TIERS[key];
+  saveLead({
+    name: name,
+    email: email,
+    score: score,
+    max: MAX_SCORE,
+    tier: key,
+    tierTitle: t.title,
+    tierText: t.text,
+    checkoutUrl: KIWIFY_CHECKOUT_URL,
+    ...profileAnswers,
+  });
+  renderResult(key, name, score);
+}
+
+function renderResult(key, name, score) {
+  setProgress(TOTAL_STEPS, false);
+  const t = TIERS[key];
+  const greeting = name ? `${name}, seu` : "Seu";
+  cardEl.innerHTML = `
+    <div class="q-eyebrow">Resultado · ${score} de ${MAX_SCORE} pontos</div>
+    <h2 class="q-qtext">${greeting} nível: ${t.title}</h2>
+    <p class="q-sub">${t.text}</p>
+    <p class="q-sub"><em>Esse resultado é só uma fotografia do momento — o próximo passo é
+      estruturar seu plano de desenvolvimento como coordenador(a) multidisciplinar.</em></p>
+    <div class="q-offer">
+      <div class="q-offer-label">O que você recebe no NeuroCoordenação</div>
+      <div class="q-offer-title">5 módulos · 5 ferramentas prontas · 30 páginas</div>
+      <div class="q-price"><span class="q-price-old">R$ 197</span> por <strong>R$ 67</strong> à vista</div>
+      <a class="q-btn q-btn-cta" href="${KIWIFY_CHECKOUT_URL}" target="_blank" rel="noopener">Quero minha cópia agora</a>
+      <div class="q-foot">Garantia incondicional de 7 dias · acesso imediato após a compra</div>
+    </div>
+    <button class="q-back" id="restartBtn" type="button">Refazer o diagnóstico</button>
+  `;
+  document.getElementById("restartBtn").addEventListener("click", renderIntro);
+}
+
+renderIntro();
+
+</script>
+</body>
+</html>
