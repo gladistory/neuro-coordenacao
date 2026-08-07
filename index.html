@@ -5,20 +5,18 @@
   1. KIWIFY_CHECKOUT_URL (no <script> no fim do arquivo) — trocar pelo link
      real de checkout da Kiwify. Está como placeholder:
      "https://pay.kiwify.com.br/SEU-LINK-AQUI"
-  2. Mockup da capa do e-book (seção Hero) — hoje é um mockup 100% em CSS.
-     Procure o comentário "TODO: substituir por imagem real do mockup da capa".
-  3. Depoimentos (seção "Prova social") — todos são placeholders explícitos,
+  2. Depoimentos (seção "Prova social") — todos são placeholders explícitos,
      marcados com [DEPOIMENTO N — substituir por depoimento real]. NÃO
      publicar com depoimento fictício apresentado como real.
-  4. Pixel de rastreamento (Kiwify/Meta) — procure o comentário
+  3. Pixel de rastreamento (Kiwify/Meta) — procure o comentário
      "PIXEL: colar aqui..." logo antes de </head> e cole o script fornecido
      pela Kiwify/Meta Ads.
-  5. Imagem de Open Graph (og:image) — está comentada com TODO no <head>;
-     hoje o preview de compartilhamento não terá imagem. Suba uma imagem
-     1200x630px e descomente/edite a tag.
-  6. Links do footer (Termos de Uso, Política de Privacidade, Suporte) —
+  4. Imagem de Open Graph (og:image) — hoje aponta para assets/capa-ebook.png
+     (retrato, 2481x3508). Funciona como preview, mas o ideal é uma imagem
+     paisagem 1200x630px dedicada para compartilhamento em redes sociais.
+  5. Links do footer (Termos de Uso, Política de Privacidade, Suporte) —
      estão como "#" placeholder, apontar para páginas reais quando existirem.
-  7. Preço (R$67 / R$197) — está centralizado na variável CSS --preco-atual
+  6. Preço (R$67 / R$197) — está centralizado na variável CSS --preco-atual
      e --preco-antigo (custom properties) e nos textos correspondentes,
      busque por "R$ 67" e "R$ 197" caso precise alterar em mais de um lugar.
   ============================================================================
@@ -29,14 +27,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NeuroCoordenação — Gestão e Influência para Coordenadores de Saúde Multidisciplinar</title>
-<meta name="description" content="E-book com 5 módulos e 5 ferramentas prontas para coordenadoras de saúde liderarem equipes multiprofissionais em UTI, Centro Cirúrgico e Emergência com neurociência, inteligência emocional e gestão de verdade.">
+<meta name="description" content="E-book com 5 módulos e 5 ferramentas prontas para coordenadoras de saúde liderarem equipes multiprofissionais em qualquer unidade, com neurociência, inteligência emocional e gestão de verdade.">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="NeuroCoordenação — Gestão e Influência para Coordenadores de Saúde Multidisciplinar">
-<meta property="og:description" content="Você virou coordenadora. Ninguém te ensinou a liderar. E-book com 5 módulos e 5 ferramentas prontas para o seu plantão.">
-<!-- TODO: substituir por imagem real 1200x630px hospedada publicamente -->
-<meta property="og:image" content="TODO-URL-DA-IMAGEM-OG.jpg">
+<meta property="og:description" content="Você virou coordenadora. Ninguém te ensinou a liderar. E-book com 5 módulos e 5 ferramentas prontas para a sua rotina de gestão.">
+<!-- TODO: imagem atual (assets/capa-ebook.png) é retrato; para um preview ideal no
+     compartilhamento, use uma imagem paisagem 1200x630px hospedada publicamente -->
+<meta property="og:image" content="assets/capa-ebook.png">
 <meta property="og:locale" content="pt_BR">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -195,65 +194,23 @@
   }
   .hero-proof strong{color:var(--marrom-escuro);}
 
-  /* Mockup da capa em CSS puro */
+  /* Mockup da capa */
   .cover-wrap{
     display:flex;
     justify-content:center;
     perspective:1200px;
   }
-  .cover{
-    /* TODO: substituir por imagem real do mockup da capa */
-    width:260px;
-    aspect-ratio:3/4.2;
+  .cover-img{
+    width:100%;
+    max-width:320px;
     border-radius:6px 10px 10px 6px;
-    background:linear-gradient(155deg, #0E3B44, #123f4a 55%, #0E3B44);
     box-shadow:
       -14px 20px 40px -12px rgba(43,29,20,0.45),
-      inset -8px 0 16px rgba(0,0,0,0.35);
+      0 0 0 1px rgba(43,29,20,0.06);
     transform:rotateY(-18deg) rotateX(3deg);
-    position:relative;
-    padding:28px 22px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    color:#E7C989;
     transition:transform .4s ease;
   }
-  .cover-wrap:hover .cover{transform:rotateY(-8deg) rotateX(1deg);}
-  .cover::before{
-    content:"";
-    position:absolute;
-    left:0;top:0;bottom:0;
-    width:14px;
-    background:linear-gradient(90deg, rgba(0,0,0,0.4), transparent);
-    border-radius:6px 0 0 6px;
-  }
-  .cover .cover-eyebrow{
-    font-size:0.62rem;
-    letter-spacing:0.16em;
-    text-transform:uppercase;
-    font-weight:700;
-    opacity:0.85;
-  }
-  .cover .cover-title{
-    font-family:var(--serif);
-    font-size:1.5rem;
-    font-weight:700;
-    line-height:1.15;
-    color:#F5DFA8;
-  }
-  .cover .cover-sub{
-    font-size:0.72rem;
-    line-height:1.4;
-    opacity:0.85;
-  }
-  .cover .cover-badge{
-    align-self:flex-start;
-    font-size:0.65rem;
-    border:1px solid rgba(231,201,137,0.5);
-    padding:4px 10px;
-    border-radius:100px;
-  }
+  .cover-wrap:hover .cover-img{transform:rotateY(-8deg) rotateX(1deg);}
 
   /* ---------- Blocos de dor ---------- */
   .pain-grid{
@@ -624,28 +581,19 @@
       <h1>Você virou coordenadora. Ninguém te ensinou a liderar.</h1>
       <p class="sub">
         Um guia direto ao ponto para coordenadoras de saúde liderarem equipes
-        multiprofissionais em UTI, Centro Cirúrgico e Emergência — unindo
-        neurociência aplicada à decisão, inteligência emocional e ferramentas
-        de gestão prontas para usar no seu plantão.
+        multiprofissionais em qualquer unidade — da atenção básica aos setores
+        de alta complexidade — unindo neurociência aplicada à decisão,
+        inteligência emocional e ferramentas de gestão prontas para usar no
+        seu dia a dia.
       </p>
       <a href="#oferta" class="btn-cta" id="btnHeroCta">Quero o meu por R$ 67</a>
       <p class="hero-proof">
         <strong>+30 páginas</strong> · <strong>5 módulos</strong> · <strong>5 ferramentas prontas</strong>
-        para usar no seu plantão
+        para usar na sua rotina de gestão
       </p>
     </div>
     <div class="cover-wrap">
-      <!-- TODO: substituir por imagem real do mockup da capa -->
-      <div class="cover" role="img" aria-label="Mockup da capa do e-book NeuroCoordenação">
-        <div>
-          <div class="cover-eyebrow">E-book · Edição 2026</div>
-        </div>
-        <div>
-          <div class="cover-title">NeuroCoordenação</div>
-          <p class="cover-sub">Gestão e Influência para Coordenadores de Saúde Multidisciplinar</p>
-        </div>
-        <span class="cover-badge">5 módulos · 5 ferramentas</span>
-      </div>
+      <img class="cover-img" src="assets/capa-ebook.png" alt="Capa do e-book NeuroCoordenação — Gestão e Influência para Coordenadores de Saúde Multidisciplinar" width="2481" height="3508">
     </div>
   </div>
 </section>
@@ -668,10 +616,10 @@
 <section>
   <div class="container promise">
     <p>
-      Liderar uma equipe multiprofissional em um setor crítico não devia ser algo que
-      se aprende "na marra", plantão após plantão, errando na frente de quem depende
-      de você. Existe ciência e método por trás de toda coordenadora que lidera bem
-      — e isso pode ser aprendido.
+      Liderar uma equipe multiprofissional de saúde não devia ser algo que se
+      aprende "na marra", errando na frente de quem depende de você — seja qual
+      for o setor. Existe ciência e método por trás de toda coordenadora que
+      lidera bem — e isso pode ser aprendido.
     </p>
     <p class="highlight">
       "Liderança em saúde não é sobre ter mais paciência. É sobre ter mais ferramenta."
@@ -694,7 +642,7 @@
       <div class="module-card">
         <div class="module-num">02</div>
         <h3>Desenvolvimento da Inteligência Emocional para Influência</h3>
-        <p>Autorregulação, empatia e escuta ativa aplicadas a plantões de UTI, Centro Cirúrgico e Emergência.</p>
+        <p>Autorregulação, empatia e escuta ativa aplicadas à rotina de qualquer equipe multiprofissional de saúde.</p>
       </div>
       <div class="module-card">
         <div class="module-num">03</div>
@@ -760,7 +708,7 @@
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Você foi promovida a coordenadora sem nenhum treinamento formal de gestão.</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Você lida com conflitos entre categorias profissionais quase toda semana.</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Você quer ferramentas prontas, não só teoria de MBA.</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Você atua em UTI, Centro Cirúrgico, Emergência ou setor crítico similar.</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Você coordena qualquer equipe de saúde multiprofissional — da atenção básica à alta complexidade.</li>
         </ul>
       </div>
       <div class="fit-card fit-no">
@@ -790,7 +738,7 @@
         <div class="testimonial-author">
           <div class="avatar-placeholder">C</div>
           <div>
-            <div class="name">Coordenadora de UTI</div>
+            <div class="name">Coordenadora de Enfermagem</div>
             <div class="role">Hospital privado</div>
           </div>
         </div>
@@ -801,8 +749,8 @@
         <div class="testimonial-author">
           <div class="avatar-placeholder">C</div>
           <div>
-            <div class="name">Coordenadora de Centro Cirúrgico</div>
-            <div class="role">Rede hospitalar</div>
+            <div class="name">Coordenadora de Equipe Multiprofissional</div>
+            <div class="role">Clínica de atenção básica</div>
           </div>
         </div>
         <span class="placeholder-tag">Placeholder</span>
@@ -812,8 +760,8 @@
         <div class="testimonial-author">
           <div class="avatar-placeholder">C</div>
           <div>
-            <div class="name">Coordenadora de Emergência</div>
-            <div class="role">Hospital público</div>
+            <div class="name">Coordenadora de Unidade de Saúde</div>
+            <div class="role">Rede hospitalar</div>
           </div>
         </div>
         <span class="placeholder-tag">Placeholder</span>
