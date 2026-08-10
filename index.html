@@ -5,20 +5,21 @@
   1. KIWIFY_CHECKOUT_URL (no <script> no fim do arquivo) — trocar pelo link
      real de checkout da Kiwify. Está como placeholder:
      "https://pay.kiwify.com.br/SEU-LINK-AQUI"
-  2. Depoimentos (seção "Prova social") — todos são placeholders explícitos,
-     marcados com [DEPOIMENTO N — substituir por depoimento real]. NÃO
-     publicar com depoimento fictício apresentado como real.
-  3. Pixel de rastreamento (Kiwify/Meta) — procure o comentário
+  2. Pixel de rastreamento (Kiwify/Meta) — procure o comentário
      "PIXEL: colar aqui..." logo antes de </head> e cole o script fornecido
      pela Kiwify/Meta Ads.
-  4. Imagem de Open Graph (og:image) — hoje aponta para assets/capa-ebook.png
+  3. Imagem de Open Graph (og:image) — hoje aponta para assets/capa-ebook.png
      (retrato, 2481x3508). Funciona como preview, mas o ideal é uma imagem
      paisagem 1200x630px dedicada para compartilhamento em redes sociais.
-  5. Links do footer (Termos de Uso, Política de Privacidade, Suporte) —
+  4. Links do footer (Termos de Uso, Política de Privacidade, Suporte) —
      estão como "#" placeholder, apontar para páginas reais quando existirem.
-  6. Preço (R$67 / R$197) — está centralizado na variável CSS --preco-atual
+  5. Preço (R$67 / R$197) — está centralizado na variável CSS --preco-atual
      e --preco-antigo (custom properties) e nos textos correspondentes,
      busque por "R$ 67" e "R$ 197" caso precise alterar em mais de um lugar.
+  6. Depoimentos (seção "Prova social") — são capturas reais de comentários do
+     Instagram sobre a mentoria/liderança da autora, não especificamente sobre
+     este e-book. Confirme que há autorização de uso dessas imagens antes de
+     publicar.
   ============================================================================
 -->
 <!DOCTYPE html>
@@ -356,43 +357,14 @@
   .testimonial-card{
     background:var(--off-white);
     border-radius:18px;
-    padding:26px;
+    padding:10px;
     box-shadow:0 4px 16px -8px rgba(43,29,20,0.12);
-    font-size:0.95rem;
+    overflow:hidden;
   }
-  .testimonial-card .quote{
-    font-style:italic;
-    color:var(--marrom-escuro);
-    margin-bottom:16px;
+  .testimonial-card img{
+    width:100%;
+    border-radius:10px;
     display:block;
-  }
-  .testimonial-author{
-    display:flex;
-    align-items:center;
-    gap:12px;
-  }
-  .avatar-placeholder{
-    width:42px;height:42px;border-radius:50%;
-    background:var(--pele);
-    flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;
-    font-family:var(--serif);
-    color:var(--marrom-escuro);
-    font-weight:700;
-  }
-  .testimonial-author .name{font-weight:700;color:var(--marrom-escuro);font-size:0.9rem;}
-  .testimonial-author .role{font-size:0.8rem;color:var(--marrom-medio);}
-  .placeholder-tag{
-    display:inline-block;
-    margin-top:10px;
-    font-size:0.68rem;
-    font-weight:700;
-    letter-spacing:0.06em;
-    text-transform:uppercase;
-    color:var(--azul-insta);
-    background:rgba(56,151,240,0.1);
-    padding:3px 8px;
-    border-radius:6px;
   }
 
   /* ---------- Oferta ---------- */
@@ -549,13 +521,14 @@
     .modules-grid{grid-template-columns:1fr 1fr;}
     .tools-list{grid-template-columns:1fr 1fr;}
     .fit-grid{grid-template-columns:1fr 1fr;}
-    .testimonials-grid{grid-template-columns:repeat(3,1fr);}
+    .testimonials-grid{grid-template-columns:1fr 1fr;}
   }
 
   @media (min-width:900px){
     .hero .container{
       grid-template-columns:1.1fr 0.9fr;
     }
+    .testimonials-grid{grid-template-columns:repeat(3,1fr);}
     .hero h1{font-size:2.75rem;}
     .hero .sub{font-size:1.2rem;}
     .section-title{font-size:2.1rem;}
@@ -727,44 +700,28 @@
 </section>
 
 <!-- ================= PROVA SOCIAL ================= -->
-<!-- ATENÇÃO: todos os depoimentos abaixo são PLACEHOLDERS. Substituir por
-     depoimentos reais, com autorização, antes de publicar a página. -->
 <section class="bg-off">
   <div class="container">
-    <h2 class="section-title center mx-auto">Quem já aplicou (em breve, depoimentos reais)</h2>
+    <h2 class="section-title center mx-auto">Quem já foi liderado por essa metodologia</h2>
+    <p class="section-lead center mx-auto">Depoimentos reais recebidos no Instagram, de profissionais que já foram liderados ou mentorados com essa abordagem.</p>
     <div class="testimonials-grid">
       <div class="testimonial-card">
-        <span class="quote">[DEPOIMENTO 1 — substituir por depoimento real]</span>
-        <div class="testimonial-author">
-          <div class="avatar-placeholder">C</div>
-          <div>
-            <div class="name">Coordenadora de Enfermagem</div>
-            <div class="role">Hospital privado</div>
-          </div>
-        </div>
-        <span class="placeholder-tag">Placeholder</span>
+        <img src="assets/depoimento-1.jpeg" alt="Depoimento de auxiliadorapond no Instagram sobre a mentoria" loading="lazy" width="1179" height="549">
       </div>
       <div class="testimonial-card">
-        <span class="quote">[DEPOIMENTO 2 — substituir por depoimento real]</span>
-        <div class="testimonial-author">
-          <div class="avatar-placeholder">C</div>
-          <div>
-            <div class="name">Coordenadora de Equipe Multiprofissional</div>
-            <div class="role">Clínica de atenção básica</div>
-          </div>
-        </div>
-        <span class="placeholder-tag">Placeholder</span>
+        <img src="assets/depoimento-2.jpeg" alt="Depoimento de rebecamagah no Instagram sobre a mentoria" loading="lazy" width="1179" height="575">
       </div>
       <div class="testimonial-card">
-        <span class="quote">[DEPOIMENTO 3 — substituir por depoimento real]</span>
-        <div class="testimonial-author">
-          <div class="avatar-placeholder">C</div>
-          <div>
-            <div class="name">Coordenadora de Unidade de Saúde</div>
-            <div class="role">Rede hospitalar</div>
-          </div>
-        </div>
-        <span class="placeholder-tag">Placeholder</span>
+        <img src="assets/depoimento-3.jpeg" alt="Depoimento de renatinha.santosf no Instagram sobre a mentoria" loading="lazy" width="916" height="1280">
+      </div>
+      <div class="testimonial-card">
+        <img src="assets/depoimento-4.jpeg" alt="Depoimento de jessicanpintoo no Instagram sobre a mentoria" loading="lazy" width="1179" height="1260">
+      </div>
+      <div class="testimonial-card">
+        <img src="assets/depoimento-5.jpeg" alt="Depoimento de ariterco86 no Instagram sobre a mentoria" loading="lazy" width="885" height="1280">
+      </div>
+      <div class="testimonial-card">
+        <img src="assets/depoimento-6.jpeg" alt="Depoimento de silvania_trindade_silva no Instagram sobre a mentoria" loading="lazy" width="1179" height="1253">
       </div>
     </div>
   </div>
