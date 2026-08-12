@@ -2,21 +2,18 @@
   ============================================================================
   RESUMO DE TODOs PENDENTES ANTES DE PUBLICAR (leia antes de subir para o ar)
   ============================================================================
-  1. KIWIFY_CHECKOUT_URL (no <script> no fim do arquivo) — trocar pelo link
-     real de checkout da Kiwify. Está como placeholder:
-     "https://pay.kiwify.com.br/SEU-LINK-AQUI"
-  2. Pixel de rastreamento (Kiwify/Meta) — procure o comentário
+  1. Pixel de rastreamento (Kiwify/Meta) — procure o comentário
      "PIXEL: colar aqui..." logo antes de </head> e cole o script fornecido
      pela Kiwify/Meta Ads.
-  3. Imagem de Open Graph (og:image) — hoje aponta para assets/capa-ebook.png
+  2. Imagem de Open Graph (og:image) — hoje aponta para assets/capa-ebook.png
      (retrato, 2481x3508). Funciona como preview, mas o ideal é uma imagem
      paisagem 1200x630px dedicada para compartilhamento em redes sociais.
-  4. Links do footer (Termos de Uso, Política de Privacidade, Suporte) —
+  3. Links do footer (Termos de Uso, Política de Privacidade, Suporte) —
      estão como "#" placeholder, apontar para páginas reais quando existirem.
-  5. Preço (R$67 / R$197) — está centralizado na variável CSS --preco-atual
+  4. Preço (R$67 / R$197) — está centralizado na variável CSS --preco-atual
      e --preco-antigo (custom properties) e nos textos correspondentes,
      busque por "R$ 67" e "R$ 197" caso precise alterar em mais de um lugar.
-  6. Depoimentos (seção "Prova social") — são capturas reais de comentários do
+  5. Depoimentos (seção "Prova social") — são capturas reais de comentários do
      Instagram sobre a mentoria/liderança da autora, não especificamente sobre
      este e-book. Confirme que há autorização de uso dessas imagens antes de
      publicar.
@@ -1016,7 +1013,7 @@
 
 <script>
   // Link de checkout da Kiwify — troque pelo link real antes de publicar.
-  const KIWIFY_CHECKOUT_URL = "https://pay.kiwify.com.br/SEU-LINK-AQUI";
+  const KIWIFY_CHECKOUT_URL = "https://pay.kiwify.com.br/h5JNC4u";
 
   document.querySelectorAll('#btnHeaderCta, #btnHeroCta, #btnOfertaCta, #btnFinalCta').forEach(function(btn){
     btn.setAttribute('href', KIWIFY_CHECKOUT_URL);
