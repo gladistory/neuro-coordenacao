@@ -257,6 +257,53 @@
     line-height:1.4;
   }
 
+  /* ---------- Mentora ---------- */
+  .mentor-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:36px;
+    align-items:center;
+  }
+  .mentor-photo-wrap{
+    display:flex;
+    justify-content:center;
+  }
+  .mentor-photo{
+    width:100%;
+    max-width:300px;
+    border-radius:16px;
+    box-shadow:0 20px 50px -20px rgba(43,29,20,0.4);
+    object-fit:cover;
+  }
+  .mentor-credentials{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:14px 0 20px;
+  }
+  .credential-tag{
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--marrom-escuro);
+    background:var(--off-white);
+    border:1px solid rgba(176,141,79,0.35);
+    padding:6px 12px;
+    border-radius:100px;
+  }
+  .mentor-copy p{
+    font-size:1rem;
+    margin-bottom:16px;
+  }
+  .mentor-copy .highlight{
+    display:block;
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--dourado);
+    font-size:1.15rem;
+    line-height:1.5;
+    margin-top:20px;
+  }
+
   /* ---------- Módulos ---------- */
   .modules-grid{
     display:grid;
@@ -591,6 +638,7 @@
     .section-title{font-size:2.1rem;}
     section{padding:88px 0;}
     .modules-grid{grid-template-columns:repeat(3,1fr);}
+    .mentor-grid{grid-template-columns:0.8fr 1.2fr;}
   }
 </style>
 </head>
@@ -654,6 +702,28 @@
     <p class="highlight">
       "Liderança em saúde não é sobre ter mais paciência. É sobre ter mais ferramenta."
     </p>
+  </div>
+</section>
+
+<!-- ================= MENTORA ================= -->
+<section class="bg-off">
+  <div class="container mentor-grid">
+    <div class="mentor-photo-wrap">
+      <img class="mentor-photo" src="assets/mentora-wal-brandao.jpg" alt="Foto de Wal Brandão, autora do NeuroCoordenação" loading="lazy" width="700" height="1050">
+    </div>
+    <div class="mentor-copy">
+      <span class="eyebrow">QUEM VAI GUIAR A SUA JORNADA</span>
+      <h2 class="section-title">Wal Brandão</h2>
+      <div class="mentor-credentials">
+        <span class="credential-tag">Mestre em Enfermagem</span>
+        <span class="credential-tag">MBA Executivo em Gestão de Saúde</span>
+        <span class="credential-tag">Especialista Titulada em UTI</span>
+        <span class="credential-tag">Analista de Perfil Comportamental (DISC)</span>
+      </div>
+      <p>Com mais de 18 anos de atuação na alta gestão hospitalar como Coordenadora de UTI, Gerente Assistencial e Gerente da Qualidade, liderou equipes multiprofissionais sob pressão extrema em cenários de altíssima complexidade.</p>
+      <p>Seus produtos e mentorias não entregam teorias de prateleira, mas o método prático, a ciência e as ferramentas de gestão de quem viveu a rotina do plantão.</p>
+      <p class="highlight">"O caminho exato para você sair da sobrecarga operacional e se tornar um líder estratégico, seguro e respeitado na saúde."</p>
+    </div>
   </div>
 </section>
 
